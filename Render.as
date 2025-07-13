@@ -58,8 +58,8 @@ description="It will only show if it's different to PB"]
 bool showSessionBlank = true;
 
 #if TMNEXT
-[Setting category="Window" name="Show gold ring on Author medal"]
-bool authorRing = true;
+[Setting category="Window" name="Show icon overlays"]
+bool showIconOverlays = true;
 #endif
 
 [Setting category="Window" name="Location"]

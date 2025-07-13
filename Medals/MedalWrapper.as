@@ -195,48 +195,35 @@ class MedalWrapper {
             }
             UI::Text(icon);
             if ((!this.config.usePreviousOverlayIcon && this.config.iconOverlay != "") || (this.config.usePreviousOverlayIcon && previous !is null && previous.config.iconOverlay != "")) {
-                if (previous is null) {
-                    iconOverlay = this.config.iconOverlay;
-                } else if (this.config.usePreviousOverlayIcon && this.config.usePreviousOverlayColor) {
-                    iconOverlay = previous.config.iconOverlay;
-                } else if (this.config.usePreviousOverlayIcon) {
-                    iconOverlay = Text::StripOpenplanetFormatCodes(previous.config.iconOverlay);
-                    if (iconOverlay != "") {
-                        iconOverlay = GetFormatColor(this.config.iconOverlay) + iconOverlay;
-                    }
-                } else if (this.config.usePreviousOverlayColor) {
-                    iconOverlay = GetFormatColor(previous.config.iconOverlay);
-                    if (iconOverlay != "") {
-                        iconOverlay += Text::StripOpenplanetFormatCodes(this.config.iconOverlay);
-                    } else {
+                if (showIconOverlays) {
+                    if (previous is null) {
                         iconOverlay = this.config.iconOverlay;
+                    } else if (this.config.usePreviousOverlayIcon && this.config.usePreviousOverlayColor) {
+                        iconOverlay = previous.config.iconOverlay;
+                    } else if (this.config.usePreviousOverlayIcon) {
+                        iconOverlay = Text::StripOpenplanetFormatCodes(previous.config.iconOverlay);
+                        if (iconOverlay != "") {
+                            iconOverlay = GetFormatColor(this.config.iconOverlay) + iconOverlay;
+                        }
+                    } else if (this.config.usePreviousOverlayColor) {
+                        iconOverlay = GetFormatColor(previous.config.iconOverlay);
+                        if (iconOverlay != "") {
+                            iconOverlay += Text::StripOpenplanetFormatCodes(this.config.iconOverlay);
+                        } else {
+                            iconOverlay = this.config.iconOverlay;
+                        }
                     }
-
                 }
                 if (iconOverlay.Length > 0) {
-#if TMNEXT
-                        if ((previous !is null && previous.name != 'Author') || authorRing) {
-                            UI::SetCursorPos(pos);
-                            UI::Text(iconOverlay);
-                        }
-#else
-                        UI::SetCursorPos(pos);
-                        UI::Text(iconOverlay);
-#endif
+                    UI::SetCursorPos(pos);
+                    UI::Text(iconOverlay);
                 }
             }
-        } else if (this.config.iconOverlay.Length > 0) {
+        } else if (showIconOverlays && this.config.iconOverlay.Length > 0) {
             const vec2 pos = UI::GetCursorPos();
             UI::Text(this.config.icon);
-#if TMNEXT
-            if (this.config.defaultName != 'Author' || authorRing) {
-                UI::SetCursorPos(pos);
-                UI::Text(this.config.iconOverlay);
-            }
-#else
             UI::SetCursorPos(pos);
             UI::Text(this.config.iconOverlay);
-#endif
         } else {
             UI::Text(this.config.icon);
         }
