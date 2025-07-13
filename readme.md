@@ -17,6 +17,7 @@ Unlike Ultimate Medals, (which only shows ingame medals) and Ultimate Medals++ (
 ### Supporting plugins:
 - Warrior Medals
 - Copium
+- Champion Medals
 
 
 ## Exports
