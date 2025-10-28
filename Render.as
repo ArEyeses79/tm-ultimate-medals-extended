@@ -60,6 +60,9 @@ bool showSessionBlank = true;
 [Setting category="Window" name="Location"]
 vec2 windowPos = vec2(0, 170);
 
+[Setting category="Window" name="Text size" step=0.1 description="Consider using Openplanet's builtin UI scale instead"]
+float textSize = 1.;
+
 [Setting category="Window" name="Allow dragging"]
 bool windowDrag = true;
 
@@ -133,6 +136,8 @@ void Render() {
         return;
     }
 
+    UI::PushFontSize(16.0 * textSize);
+
     if (showMapName || showMapAuthor || showCurrentAuthorName) {
         UI::BeginGroup();
         if (showMapName) {
@@ -194,6 +199,8 @@ void Render() {
     }
 
     MedalsList::Render();
+
+    UI::PopFontSize();
 
     UI::End();
     
