@@ -41,7 +41,7 @@ namespace PreviousRun {
                     CGameGhostScript@ ghost = playgroundScript.Ghost_RetrieveFromPlayer(cast<CSmScriptPlayer>(player.ScriptAPI));
                     if (ghost !is null) {
                         uint score = uint(-1);
-                        if (MapData::gamemode == GameMode::Race) {
+                        if (MapData::gamemode == GameMode::Race || MapData::gamemode == GameMode::RaceClones) {
                             if (ghost.Result.Time > 0 && ghost.Result.Time < uint(-1)) {
                                 score = ghost.Result.Time;
                             }

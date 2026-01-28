@@ -1,6 +1,7 @@
 enum GameMode {
     None,
     Race,
+    RaceClones,
     Stunt,
     Platform,
     Royal
@@ -27,6 +28,11 @@ namespace MapData {
         string gm = cast<CTrackManiaNetworkServerInfo@>(app.Network.ServerInfo).CurGameModeStr;
         if (gm.Contains('Race') || gm.Contains('Obstacle')) {
             gamemode = GameMode::Race;
+#if TMNEXT
+            if (IsClones(app.RootMap)) {
+                gamemode = GameMode::RaceClones;
+            }
+#endif
         } else if (gm.Contains('Stunt')) {
             gamemode = GameMode::Stunt;
         } else if (gm.Contains('Platform')) {
@@ -38,6 +44,11 @@ namespace MapData {
             gm = getMap().MapType;
             if (gm.Contains('Race') || gm.Contains('Obstacle')) {
                 gamemode = GameMode::Race;
+#if TMNEXT
+                if (IsClones(app.RootMap)) {
+                    gamemode = GameMode::RaceClones;
+                }
+#endif
             } else if (gm.Contains('Stunt')) {
                 gamemode = GameMode::Stunt;
             } else if (gm.Contains('Platform')) {
@@ -204,7 +215,9 @@ namespace MapData {
 
             CGameScoreAndLeaderBoardManagerScript@ scoreMgr = network.ClientManiaAppPlayground.ScoreMgr;
             string gamemodeid = 'TimeAttack';
-            if (gamemode == GameMode::Stunt) {
+            if (gamemode == GameMode::RaceClones) {
+                gamemodeid = 'TimeAttackClone';
+            } else if (gamemode == GameMode::Stunt) {
                 gamemodeid = 'Stunt';
             } else if (gamemode == GameMode::Platform) {
                 gamemodeid = 'Platform';
