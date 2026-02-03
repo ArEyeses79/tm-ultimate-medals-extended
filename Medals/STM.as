@@ -33,17 +33,17 @@ namespace STM {
 
     uint getSuperGold(const uint mapNum, const uint tm) {
         const uint stm = getSuperTrackmaster(mapNum);
-        return stm > 0 ? tm - int(Math::Ceil((tm - stm) * 0.875f)) : 0;
+        return stm > 0 ? Math::Round(stm + ((tm - stm) * 0.125f)) : 0;
     }
 
     uint getSuperSilver(const uint mapNum, const uint tm) {
         const uint stm = getSuperTrackmaster(mapNum);
-        return stm > 0 ? tm - int(Math::Ceil((tm - stm) * 0.75f)) : 0;
+        return stm > 0 ? Math::Round(stm + ((tm - stm) * 0.25f)) : 0;
     }
 
     uint getSuperBronze(const uint mapNum, const uint tm) {
         const uint stm = getSuperTrackmaster(mapNum);
-        return stm > 0 ? tm - int(Math::Ceil((tm - stm) * 0.5f)) : 0;
+        return stm > 0 ? Math::Round(stm + ((tm - stm) * 0.5f)) : 0;
     }
 }
 
