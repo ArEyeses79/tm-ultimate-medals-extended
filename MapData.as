@@ -104,7 +104,7 @@ namespace MapData {
     void Update() {
         CGameCtnApp@ app = GetApp();
         CGameCtnChallenge@ map = getMap();
-        
+
         if (map is null) {
             currentMap = '';
             return;
@@ -146,7 +146,7 @@ namespace MapData {
             currentMap = '';
             return;
         }
-        if (showReplayEditor && replay !is null && 
+        if (showReplayEditor && replay !is null &&
             map.MapInfo.Kind == 6) { // unnamed enum - in progress
                 currentMap = '';
                 return;
@@ -174,7 +174,7 @@ namespace MapData {
 #if TURBO
         PreviousRun::Update();
 #else
-        if (validationMode || 
+        if (validationMode ||
             (MedalsList::session.enabled || MedalsList::previous.enabled)) {
                 PreviousRun::Update();
         }
@@ -191,7 +191,7 @@ namespace MapData {
 #endif
 
         if (MedalsList::pb is null || !MedalsList::pb.enabled) {return;}
-        
+
         if (showReplayEditor && replay !is null) {
             // replay editor doesn't load until after first entering map, so pb needs to re-detect that it is now invalid
             if (!hasLoadedReplayEditor) {
@@ -235,7 +235,7 @@ namespace MapData {
             cast<PbMedal>(MedalsList::pb.medal).updateIfNeeded(scoreMgr.Map_GetRecord(network.PlayerInfo.Id, currentMap, ""), currentMap);
         } else {
             // on servers
-            
+
             // todo: maybe do whatever Ultimate Medals does with local replays
 
             // check session pb

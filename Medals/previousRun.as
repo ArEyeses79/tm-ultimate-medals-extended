@@ -22,7 +22,7 @@ class Previous : UltimateMedalsExtended::IMedal {
 #if TMNEXT
             && app.Network.ClientManiaAppPlayground !is null
 #endif
-            ) { 
+            ) {
                 this.validMedalTime = true;
         } else {
             this.validMedalTime = false;
@@ -76,7 +76,7 @@ class Session : UltimateMedalsExtended::IMedal {
 #if TMNEXT
             && app.Network.ClientManiaAppPlayground !is null
 #endif
-            ) { 
+            ) {
                 this.validMedalTime = true;
         } else {
             this.validMedalTime = false;

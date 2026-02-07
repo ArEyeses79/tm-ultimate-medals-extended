@@ -10,7 +10,7 @@ namespace MedalsList {
     MedalWrapper@ gold = null;
     MedalWrapper@ silver = null;
     MedalWrapper@ bronze = null;
-    
+
     void addMedal(UltimateMedalsExtended::IMedal@ medal) {
         // if the plugin is disabled, it wouldn't have done its initial setup yet
         if (!hasCalledMain) {
@@ -144,7 +144,7 @@ namespace MedalsList {
             UI::EndTable();
         }
     }
-    
+
     void RenderSettings() {
         UI::BeginTable("settings", 5, UI::TableFlags::SizingFixedFit);
         UI::TableNextRow();

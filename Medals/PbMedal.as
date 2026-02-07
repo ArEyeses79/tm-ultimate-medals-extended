@@ -29,11 +29,11 @@ class PbMedal : UltimateMedalsExtended::IMedal {
 
         CGameCtnApp@ app = GetApp();
 
-        if (app.Editor is null && 
+        if (app.Editor is null &&
 #if TMNEXT
-            app.Network.ClientManiaAppPlayground !is null && 
+            app.Network.ClientManiaAppPlayground !is null &&
 #endif
-            !(MapData::gamemode == GameMode::Royal)) { 
+            !(MapData::gamemode == GameMode::Royal)) {
                 this.validMedalTime = true;
         } else {
             this.validMedalTime = false;

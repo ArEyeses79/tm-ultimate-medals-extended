@@ -278,7 +278,7 @@ class MedalWrapper {
                 MedalsData::disableMedal(this.config.defaultName);
             }
         }
-        
+
         UI::TableNextColumn();
         UI::TableNextColumn();
         if (this.config.iconOverlay != "") {

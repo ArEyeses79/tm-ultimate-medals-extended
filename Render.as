@@ -48,7 +48,7 @@ bool requireInterface = false;
 [Setting category="Window" name="Toggle with Openplanet overlay"]
 bool requireOverlay = false;
 
-[Setting category="Window" name="Show in validation" description="\\$ff0\\$z Currently doesn't update until you exit validation"]
+[Setting category="Window" name="Show in validation"]
 bool showValidation = true;
 
 [Setting category="Window" name="Show in replay editor"]
@@ -97,7 +97,7 @@ void Render() {
         windowWasShownLastFrame = false;
         return;
     }
-    
+
     if (MapData::currentMap == '') {
         windowWasShownLastFrame = false;
         return;
@@ -127,7 +127,7 @@ void Render() {
         UI::SetNextWindowPos(int(windowPos.x), int(windowPos.y), UI::Cond::Always);
     }
     UI::SetNextWindowSize(0, 0, UI::Cond::Always);
-    
+
     int windowFlags = UI::WindowFlags::NoTitleBar | UI::WindowFlags::NoCollapse | UI::WindowFlags::AlwaysAutoResize | UI::WindowFlags::NoDocking;
     if (!UI::IsOverlayShown()) {
             windowFlags |= UI::WindowFlags::NoMove;
@@ -146,8 +146,7 @@ void Render() {
 
     if (showMapName || showMapAuthor || showCurrentAuthorName) {
         UI::BeginGroup();
-        
-        
+
         string authorName = '';
         if (showMapAuthor || showCurrentAuthorName) {
             authorName = map.AuthorNickName;
@@ -254,7 +253,7 @@ void Render() {
     UI::PopFontSize();
 
     UI::End();
-    
+
 }
 
 [SettingsTab name="Medals"]

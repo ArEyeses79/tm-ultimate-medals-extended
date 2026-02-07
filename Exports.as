@@ -11,19 +11,19 @@ namespace UltimateMedalsExtended {
 
     // if a medal name is enabled
     import bool IsMedalEnabled(const string &in defaultName) from "UltimateMedalsExtended";
-    
-    /* 
+
+    /*
      * exports for plugins which want to display in editor
      * and need to know the medal times from the current validation session (or before)
      */
 
-    /* 
+    /*
      * whether the current map is in editor validate mode
      * (and the setting to show in validation is enabled)
      */
     import bool IsEditorValidation() from "UltimateMedalsExtended";
 
-    /* 
+    /*
      * gets whether the ingame medals will be valid/displayed for the current map
      * in normal play this should be always true
      * in editor validation, this is true if either the map was already validated or if there is a session pb

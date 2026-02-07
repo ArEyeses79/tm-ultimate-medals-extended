@@ -72,7 +72,7 @@ namespace MedalsData {
             md['name'] = name;
         }
     }
-    
+
     // enables a medal's overlay if it has data saying its disabled (if no data, its enabled by default anyway)
     void enableMedalOverlay(const string &in medalId) {
         Json::Value@ md = _getOrAddMedalsData(medalId);

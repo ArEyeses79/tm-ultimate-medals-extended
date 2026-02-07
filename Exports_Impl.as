@@ -1,6 +1,6 @@
 
 namespace UltimateMedalsExtended {
-    
+
     void AddMedal(IMedal@ medal) {
         MedalsList::addMedal(medal);
     }
@@ -12,7 +12,7 @@ namespace UltimateMedalsExtended {
     bool HasMedal(const string &in defaultName) {
         return MedalsList::hasMedal(defaultName);
     }
-    
+
     bool IsMedalEnabled(const string &in defaultName) {
         return MedalsList::IsMedalEnabled(defaultName);
     }
