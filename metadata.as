@@ -1,6 +1,5 @@
 #if TMNEXT
 // based on XertroV's 'metadata gateway' plugin
-const uint16 O_MAP_SCRIPTMD = Reflection::GetType("CGameCtnChallenge").GetMember("ScriptMetadata").Offset;
 const uint SZ_METADATA_ROW = 0x88;
 
 bool IsClones(CGameCtnChallenge@ rootmap) {
@@ -8,6 +7,7 @@ bool IsClones(CGameCtnChallenge@ rootmap) {
         // since I'm using safe dev functions, this will throw an error if the game updates to change the offsets
         return _IsClones(rootmap);
     } catch {
+        warn(getExceptionInfo());
         return false;
     }
 }
@@ -16,13 +16,8 @@ bool _IsClones(CGameCtnChallenge@ rootmap) {
         warn('map has no script metadata');
         return false;
     }
-    if (O_MAP_SCRIPTMD == 0xFFFF) {
-        warn('script metadata offset is invalid (0xFFFF)');
-        return false;
-    }
-    uint64 scriptMdLoc = Dev::GetOffsetUint64(rootmap, O_MAP_SCRIPTMD);
-    uint64 pointer = Dev::SafeReadUInt64(scriptMdLoc + 0x28);
-    uint64 length = Dev::SafeReadUInt32(scriptMdLoc + 0x30);
+    uint64 pointer = Dev::GetOffsetUint64(rootmap.ScriptMetadata, 0x28);
+    uint64 length = Dev::GetOffsetUint32(rootmap.ScriptMetadata, 0x30);
     uint32 len;
     string itemName;
     for (uint i = 0; i < length; i++) {
