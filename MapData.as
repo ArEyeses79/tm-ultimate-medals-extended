@@ -13,6 +13,7 @@ namespace MapData {
     GameMode gamemode = GameMode::None;
 
     string currentMap = '';
+    uint64 timeEnterMap = 0;
     bool validationMode = false;
 
     bool hasLoadedReplayEditor = false;
@@ -159,6 +160,7 @@ namespace MapData {
 
         if (map.IdName != currentMap) {
             currentMap = map.IdName;
+            timeEnterMap = Time::Now;
 #if TURBO
             needCheckTurboPb = true;
 #endif

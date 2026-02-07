@@ -36,6 +36,12 @@ bool showMedalNameColors = true;
 [Setting category="Window" name="Show delta time"]
 bool showDelta = true;
 
+[Setting category="Window" name="Name length limit" description="Width in pixels of displayed name length. 0 is disabled"]
+uint scrollMapName = 275;
+
+[Setting category="Window" name="Name scroll speed" description="Map name scrolling speed (pixels per second)"]
+uint scrollMapSpeed = 50;
+
 [Setting category="Window" name="Toggle with interface"]
 bool requireInterface = false;
 
@@ -140,29 +146,11 @@ void Render() {
 
     if (showMapName || showMapAuthor || showCurrentAuthorName) {
         UI::BeginGroup();
-        if (showMapName) {
-            string name = map.MapName;
-            if (name == "") {
-                name = map.MapInfo.NameForUi;
-            }
-#if TURBO
-            if (map.AuthorLogin == "Nadeo") {
-                name = "#" + name;
-            }
-#endif
-            if (removeColors) {
-                UI::Text(Text::StripFormatCodes(name));
-            } else {
-                UI::Text(Text::OpenplanetFormatCodes(name));
-            }
-            if (showComment && !(showMapAuthor || showCurrentAuthorName) && map.Comments.Length > 0) {
-                UI::SameLine();
-                UI::Text('\\$68f' + Icons::InfoCircle);
-            }
-        }
+        
+        
+        string authorName = '';
         if (showMapAuthor || showCurrentAuthorName) {
-            string authorName = map.AuthorNickName;
-
+            authorName = map.AuthorNickName;
 #if DEPENDENCY_NADEOSERVICES
             if (showCurrentAuthorName && authorName != "Nadeo") {
                 const string name = Accounts::GetAccountName(map.AuthorLogin);
@@ -175,7 +163,70 @@ void Render() {
                 }
             }
 #endif
+        }
 
+        if (showMapName) {
+            string name = map.MapName;
+            if (name == "") {
+                name = map.MapInfo.NameForUi;
+            }
+#if TURBO
+            if (map.AuthorLogin == "Nadeo") {
+                name = "#" + name;
+            }
+#endif
+            if (removeColors) {
+                name = Text::StripFormatCodes(name);
+            } else {
+                name = Text::OpenplanetFormatCodes(name);
+            }
+
+            // since author name isn't scrolled, if its longer than map name limit then override the limit to be as long as the author name
+            float scrollNameWidth = (authorName == '' ? 0 : UI::MeasureString('By ' + authorName).x);
+            if (scrollNameWidth < float(scrollMapName)) {
+                scrollNameWidth = float(scrollMapName);
+            }
+            vec2 nameSize;
+            if (scrollMapName == 0 || (nameSize = UI::MeasureString(name)).x <= scrollNameWidth) {
+                UI::Text(name);
+            } else {
+                // need to scroll the name
+
+                vec2 namePos = UI::GetWindowPos() + UI::GetCursorPos();
+                UI::Dummy(vec2(scrollNameWidth, nameSize.y)); // empty space to fake drawing on top of
+
+                if (UI::IsItemHovered()) {
+                    UI::BeginTooltip();
+                    UI::PushTextWrapPos(scrollNameWidth * 2);
+                    UI::TextWrapped(name);
+                    UI::PopTextWrapPos();
+                    UI::EndTooltip();
+                }
+
+                int scrollDuration = int(((nameSize.x - scrollNameWidth) * 1000.f) / scrollMapSpeed);
+                int scrollTime = (int(Time::Now - MapData::timeEnterMap) % (scrollDuration + 3000)) - 1500;
+                float scrollPos;
+                if (scrollTime <= 0) {
+                    scrollPos = 0;
+                } else if (scrollTime > scrollDuration) {
+                    scrollPos = (scrollNameWidth - nameSize.x);
+                } else {
+                    scrollPos = float(scrollTime) / float(scrollDuration) * (scrollNameWidth - nameSize.x);
+                }
+
+                UI::DrawList@ drawList = UI::GetWindowDrawList();
+                vec4 nameBounds = vec4(namePos.x, namePos.y, scrollNameWidth, nameSize.y);
+                drawList.PushClipRect(nameBounds, true);
+                drawList.AddText(vec2(namePos.x + scrollPos, namePos.y), vec4(1.f, 1.f, 1.f, 1.f), name);
+                drawList.PopClipRect();
+            }
+
+            if (showComment && authorName == '' && map.Comments.Length > 0) {
+                UI::SameLine();
+                UI::Text('\\$68f' + Icons::InfoCircle);
+            }
+        }
+        if (authorName != '') {
             if (removeColors) {
                 UI::TextDisabled('By ' + Text::StripFormatCodes(authorName));
             } else {
