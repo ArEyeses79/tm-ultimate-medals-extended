@@ -24,11 +24,12 @@ namespace UltimateMedalsExtended {
     import bool IsEditorValidation() from "UltimateMedalsExtended";
 
     /* 
-     * gets whether the ingame medals are currently valid/displayed
+     * gets whether the ingame medals will be valid/displayed for the current map
      * in normal play this should be always true
      * in editor validation, this is true if either the map was already validated or if there is a session pb
-     * *warning* update order does not guarantee ingame medals are updated first; their values may not be valid until GetMedalTime() is called so access them there
-     * (this is best practice anyway since their times can change during editor validation)
+     * *warning* the return value from this function is whether the medals will be valid *after* UpdateMedal,
+     * so don't access the medal times during UpdateMedal; wait until GetMedalTime instead
+     * (this is best practice anyway since medal times can change during editor validation)
      */
     import bool HasIngameMedals() from "UltimateMedalsExtended";
 
@@ -53,4 +54,18 @@ namespace UltimateMedalsExtended {
      */
     import uint GetBronzeMedal() from "UltimateMedalsExtended";
 
+    /*
+     * gets the session best time
+     * a value of uint(-1) is used when no time is stored
+     * if IsEditorValidation() is true, finishes will always be tracked
+     * otherwise, finishes are only tracked when one of the relevant medals is enabled
+     */
+    import uint GetSessionBest() from "UltimateMedalsExtended";
+    /*
+     * gets the previous run time
+     * a value of uint(-1) is used when no time is stored
+     * if IsEditorValidation() is true, finishes will always be tracked
+     * otherwise, finishes are only tracked when one of the relevant medals is enabled
+     */
+    import uint GetPreviousRun() from "UltimateMedalsExtended";
 }

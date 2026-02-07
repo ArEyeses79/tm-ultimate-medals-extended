@@ -58,5 +58,11 @@ namespace UltimateMedalsExtended {
         return m.getMedalTime();
     }
 
+    uint GetSessionBest() {
+        return PreviousRun::session;
+    }
+    uint GetPreviousRun() {
+        return PreviousRun::previous;
+    }
 
 }
