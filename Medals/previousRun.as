@@ -18,7 +18,7 @@ class Previous : UltimateMedalsExtended::IMedal {
 
     void UpdateMedal(const string&in uid) override {
         CGameCtnApp@ app = GetApp();
-        if ((app.Editor is null || MapData::validationMode)
+        if ((app.Editor is null || MapData::validationMode || MapData::gamemode == GameMode::Puzzle)
 #if TMNEXT
             && app.Network.ClientManiaAppPlayground !is null
 #endif
@@ -72,7 +72,7 @@ class Session : UltimateMedalsExtended::IMedal {
 
     void UpdateMedal(const string&in uid) override {
         CGameCtnApp@ app = GetApp();
-        if (app.Editor is null || MapData::validationMode
+        if (app.Editor is null || MapData::validationMode || MapData::gamemode == GameMode::Puzzle
 #if TMNEXT
             && app.Network.ClientManiaAppPlayground !is null
 #endif
@@ -99,6 +99,9 @@ class Session : UltimateMedalsExtended::IMedal {
             return false;
         }
 
+        if (MapData::gamemode == GameMode::Puzzle) {
+            return this.validMedalTime;
+        }
         if (MapData::validationMode) {
             return this.validMedalTime && MapData::validated && (this.GetMedalTime() == uint(-1) || (MapData::highBetter ^^ this.GetMedalTime() > getMap().TMObjective_AuthorTime));
         }

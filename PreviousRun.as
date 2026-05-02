@@ -33,7 +33,8 @@ namespace PreviousRun {
         }
         CGameCtnApp@ app = GetApp();
         CGamePlayground@ playground = cast<CGamePlayground>(app.CurrentPlayground);
-        if (playground !is null && playground.GameTerminals.Length > 0 && (playground.GameTerminals[0].UISequence_Current == CGamePlaygroundUIConfig::EUISequence::Finish || (MapData::gamemode == GameMode::Stunt && playground.GameTerminals[0].UISequence_Current == CGamePlaygroundUIConfig::EUISequence::UIInteraction))) {
+        if (playground is null) {return uint(-1);}
+        if (playground.GameTerminals.Length > 0 && (MapData::gamemode == GameMode::Puzzle || playground.GameTerminals[0].UISequence_Current == CGamePlaygroundUIConfig::EUISequence::Finish || (MapData::gamemode == GameMode::Stunt && playground.GameTerminals[0].UISequence_Current == CGamePlaygroundUIConfig::EUISequence::UIInteraction))) {
             CSmArenaRulesMode@ playgroundScript = cast<CSmArenaRulesMode>(app.PlaygroundScript);
             if (playgroundScript !is null) {
                 CSmPlayer@ player = cast<CSmPlayer>(playground.GameTerminals[0].GUIPlayer);
@@ -41,7 +42,7 @@ namespace PreviousRun {
                     CGameGhostScript@ ghost = playgroundScript.Ghost_RetrieveFromPlayer(cast<CSmScriptPlayer>(player.ScriptAPI));
                     if (ghost !is null) {
                         uint score = uint(-1);
-                        if (MapData::gamemode == GameMode::Race || MapData::gamemode == GameMode::RaceClones) {
+                        if (MapData::gamemode == GameMode::Race || MapData::gamemode == GameMode::RaceClones || MapData::gamemode == GameMode::Puzzle) {
                             if (ghost.Result.Time > 0 && ghost.Result.Time < uint(-1)) {
                                 score = ghost.Result.Time;
                             }

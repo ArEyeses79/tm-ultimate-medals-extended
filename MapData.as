@@ -4,7 +4,8 @@ enum GameMode {
     RaceClones,
     Stunt,
     Platform,
-    Royal
+    Royal,
+    Puzzle
 }
 
 namespace MapData {
@@ -15,6 +16,7 @@ namespace MapData {
     string currentMap = '';
     uint64 timeEnterMap = 0;
     bool validationMode = false;
+    bool puzzle_invalidation = false;
 
     bool hasLoadedReplayEditor = false;
     bool validated = false;
@@ -40,6 +42,8 @@ namespace MapData {
             gamemode = GameMode::Platform;
         } else if (gm.Contains('Royal')) {
             gamemode = GameMode::Royal;
+        } else if (gm.Contains('Puzzle')) {
+            gamemode = GameMode::Puzzle;
         }
         if (gamemode == GameMode::None) {
             gm = getMap().MapType;
@@ -56,6 +60,8 @@ namespace MapData {
                 gamemode = GameMode::Platform;
             } else if (gm.Contains('Royal')) {
                 gamemode = GameMode::Royal;
+            } else if (gm.Contains('Puzzle')) {
+                gamemode = GameMode::Puzzle;
             }
         }
 
@@ -115,11 +121,15 @@ namespace MapData {
         CGamePlayground@ playground = app.CurrentPlayground;
 #endif
         CGameCtnEditorFree@ editor = cast<CGameCtnEditorFree>(app.Editor);
-        if (!showValidation && editor !is null || (editor !is null && (playground is null || playground.GameTerminals.Length == 0))) {
+        if (!showValidation && editor !is null || (editor !is null && (playground is null || playground.GameTerminals.Length == 0) && !map.MapType.Contains('Puzzle'))) {
             currentMap = '';
             return;
         }
-        if (showValidation && editor !is null) {
+        if (map.MapType.Contains('Puzzle')) {
+            // puzzle mode - always show in editor
+            gamemode = GameMode::Puzzle;
+            validationMode = false;
+        } else if (showValidation && editor !is null) {
             // check if in test mode
 #if TMNEXT
             CSmEditorPluginMapType@ pluginMapType = cast<CSmEditorPluginMapType>(editor.PluginMapType);
@@ -168,6 +178,13 @@ namespace MapData {
             updateGamemode();
             updateValidated();
             PreviousRun::onNewMap();
+            MedalsList::onNewMap(currentMap);
+        } else if (gamemode == GameMode::Puzzle && MedalsList::author.getMedalTime() == uint(-1) && map.TMObjective_AuthorTime != uint(-1)) {
+            // puzzle script takes a moment to set medals it seems? Or they're wrong for one frame on loading in
+            updateValidated();
+            MedalsList::onNewMap(currentMap);
+        } else if (gamemode == GameMode::Puzzle && (app.CurrentPlayground !is null) != puzzle_invalidation) {
+            puzzle_invalidation = (app.CurrentPlayground !is null);
             MedalsList::onNewMap(currentMap);
         }
 
