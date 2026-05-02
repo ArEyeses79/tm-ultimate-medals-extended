@@ -242,7 +242,7 @@ void Render() {
         if (showComment && map.Comments.Length > 0 && UI::IsItemHovered()) {
             UI::BeginTooltip();
             UI::PushTextWrapPos(200);
-            UI::TextWrapped(map.Comments);
+            UI::TextWrapped(Text::OpenplanetFormatCodes(map.Comments));
             UI::PopTextWrapPos();
             UI::EndTooltip();
         }
