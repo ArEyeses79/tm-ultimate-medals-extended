@@ -56,10 +56,11 @@ class MedalWrapper {
     // refresh function called to refresh medals, to check if sorting is needed, before each medal is then accessed in render
     void refreshMedal(const string &in uid) {
         if (!this.enabled) {return;}
+        bool wasValidCache = this.validCacheTime;
         this.validCacheTime = this.medal.HasMedalTime(uid);
         if (this.validCacheTime) {
             uint newmedal = this.medal.GetMedalTime();
-            if (newmedal != cacheTime) {
+            if (newmedal != cacheTime || !wasValidCache) {
                 updated = true;
                 this.cacheTime = newmedal;
             }
