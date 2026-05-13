@@ -131,7 +131,13 @@ namespace MedalsList {
                     UI::Text("Medal");
                 }
                 UI::TableNextColumn();
-                UI::Text("Time");
+                if (MapData::gamemode == GameMode::Stunt) {
+                    UI::Text("Points");
+                } else if (MapData::gamemode == GameMode::Platform) {
+                    UI::Text("Respawns");
+                } else {
+                    UI::Text("Time");
+                }
                 if (showDelta && pb.hasMedalTime()) {
                     UI::TableNextColumn();
                     UI::Text("Delta");
