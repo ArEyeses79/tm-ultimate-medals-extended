@@ -1,6 +1,7 @@
 namespace UltimateMedalsExtended {
     shared class Config {
         // the medal identifier, required. Custom name settings are done through UME settings.
+        // names may use ##... to add an identifier at the end of a name to distinguish 2 otherwise identical names; the ## and anything after is not included in the default display name
         string defaultName = '';
 
         // the color and icon used for the medal icon

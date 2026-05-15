@@ -101,6 +101,10 @@ namespace MedalsData {
                 break;
             }
         }
+        int index = medalId.IndexOf('##');
+        if (index != -1) {
+            return medalId.SubStr(0, index);
+        }
         return medalId;
     }
     // gets if a medal is enabled
